@@ -1,0 +1,27 @@
+name: Publish NuGet Package Spender.Client
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore dependencies 
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+      - name: Pack NuGet package
+        run: dotnet pack /p:Version=${GITHUB_REF#refs/*/} --configuration Release --no-build
+      - name: Publish NuGet package
+        run: dotnet nuget add source --username VovaZhukovsky --password ${{ secrets.NUGET_API_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/VovaZhukovsky/index.json"
+      - name: Push nuget package ${GITHUB_REF#refs/*/}
+        run: dotnet nuget push "*/bin/Release/*.${GITHUB_REF#refs/*/}.nupkg" --source "github" --api-key ${{ secrets.NUGET_API_KEY }}
