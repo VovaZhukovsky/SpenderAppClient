@@ -5,15 +5,28 @@ namespace Spender.Client;
 public class SpenderClientClient : BaseClient
 {
     readonly string routeUri = "Client";
-    public SpenderClientClient(HttpClient httpClient): base(httpClient)
+    public SpenderClientClient(HttpClient httpClient) : base(httpClient)
     {
-
     }
-    public async Task<ClientViewModel> GetAsync(string clientId)
-    {
-        string uri = $"{routeUri}?id={clientId}";
 
-        return await GetAsync<ClientViewModel>(uri);
+    public async Task<ClientViewModel> GetByMailAsync(string mail)
+    {
+        return await GetAsync<ClientViewModel>($"{routeUri}/{mail}/mail");
+    }
+
+    public async Task<ClientViewModel> GetAsync(Guid id)
+    {
+        return await GetAsync<ClientViewModel>($"{routeUri}/{id}");
+    }
+    
+    public async Task<ClientViewModel> PostAsync(ClientViewModel clientInfo)
+    {
+        return await PostAsync<ClientViewModel, ClientViewModel>($"{routeUri}", clientInfo);
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await DeleteAsync($"{routeUri}/{id}");
     }
 
 }
