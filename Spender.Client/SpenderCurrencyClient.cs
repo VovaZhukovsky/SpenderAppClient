@@ -1,13 +1,12 @@
+using Spender.Client.Interfaces;
 using Spender.ViewModel;
 
 namespace Spender.Client;
 
-public class SpenderCurrencyClient : BaseClient
+public class SpenderCurrencyClient : BaseClient, ISpenderCurrencyClient
 {
     readonly string routeUri = "Currency";
-    public SpenderCurrencyClient(HttpClient httpClient) : base(httpClient)
-    {
-    }
+    public SpenderCurrencyClient(HttpClient httpClient) : base(httpClient) { }
 
     public async Task<CurrencyViewModel> GetAsync(Guid id)
     {
@@ -23,5 +22,4 @@ public class SpenderCurrencyClient : BaseClient
     {
         await DeleteAsync($"{routeUri}/{id}");
     }
-
 }

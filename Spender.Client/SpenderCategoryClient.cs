@@ -1,17 +1,21 @@
+using Spender.Client.Interfaces;
 using Spender.ViewModel;
 
 namespace Spender.Client;
 
-public class SpenderCategoryClient : BaseClient
+public class SpenderCategoryClient : BaseClient, ISpenderCategoryClient
 {
     readonly string routeUri = "Category";
-    public SpenderCategoryClient(HttpClient httpClient) : base(httpClient)
-    {
-    }
+    public SpenderCategoryClient(HttpClient httpClient) : base(httpClient) { }
 
     public async Task<CategoryViewModel> GetAsync(Guid id)
     {
         return await GetAsync<CategoryViewModel>($"{routeUri}/{id}");
+    }
+    
+    public async Task<List<CategoryViewModel>> GetByClientAsync(Guid clientId)
+    {
+        return await GetAsync<List<CategoryViewModel>>($"{routeUri}/{clientId}/client");
     }
     
     public async Task<CategoryViewModel> PostAsync(CategoryViewModel categotyInfo)
@@ -23,5 +27,4 @@ public class SpenderCategoryClient : BaseClient
     {
         await DeleteAsync($"{routeUri}/{id}");
     }
-
 }

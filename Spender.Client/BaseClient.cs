@@ -11,7 +11,6 @@ public class BaseClient
         _httpClient = httpClient;
     }
 
-
     protected async Task SendAsync(HttpMethod method, string endpoint)
     {
         using var request = new HttpRequestMessage(method, endpoint);
@@ -54,5 +53,4 @@ public class BaseClient
     {
         return SendAsync(HttpMethod.Delete, endpoint);
     }
-
 }

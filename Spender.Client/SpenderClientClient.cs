@@ -1,13 +1,12 @@
+using Spender.Client.Interfaces;
 using Spender.ViewModel;
 
 namespace Spender.Client;
 
-public class SpenderClientClient : BaseClient
+public class SpenderClientClient : BaseClient, ISpenderClientClient
 {
     readonly string routeUri = "Client";
-    public SpenderClientClient(HttpClient httpClient) : base(httpClient)
-    {
-    }
+    public SpenderClientClient(HttpClient httpClient) : base(httpClient) { }
 
     public async Task<ClientViewModel> GetByMailAsync(string mail)
     {
@@ -28,5 +27,4 @@ public class SpenderClientClient : BaseClient
     {
         await DeleteAsync($"{routeUri}/{id}");
     }
-
 }
